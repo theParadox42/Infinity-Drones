@@ -1,4 +1,2 @@
 # Infinity-Drones
-My new game under development
-Make sure I check this out: 
-https://blogs.unity3d.com/2019/03/13/2d-pixel-perfect-how-to-set-up-your-unity-project-for-retro-8-bits-games/
+My new game under development, eventually you will fight drones that have the capacity to print more of themselves. I'm debating if this should be pixel perfect or not right now.
