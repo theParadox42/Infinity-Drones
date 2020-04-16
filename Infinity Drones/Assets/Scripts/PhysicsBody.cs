@@ -5,12 +5,12 @@ using UnityEngine;
 public class PhysicsBody : MonoBehaviour
 {
 
-    [SerializeField] float minGroundNormalY = .65f;
-    [SerializeField] float gravityModifyer = 1f;
+    [SerializeField] protected float minGroundNormalY = .65f;
+    [SerializeField] protected float gravityModifyer = 1f;
 
     protected Vector2 targetVelocity;
     protected bool grounded;
-    protected Vector2 groundNormal = Vector2.up;
+    protected Vector2 groundNormal = Vector2.up; // Initializes as flat ground
     protected Rigidbody2D rb;
     protected Vector2 velocity;
     protected ContactFilter2D contactFilter;
