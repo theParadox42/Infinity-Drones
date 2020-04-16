@@ -25,7 +25,7 @@ public class PlayerController : PhysicsBody
         if (Input.GetButtonDown("Jump") && grounded) {
             animator.SetTrigger("jump");
             velocity.y = jumpTakeOffSpeed;
-        } else if(Input.GetButtonUp("Jump")) {
+        } else if(Input.GetButtonUp("Jump") && velocity.y > 0) {
             if (velocity.y > 0) {
                 velocity.y = velocity.y * .5f;
             }

@@ -10,7 +10,7 @@ public class PhysicsBody : MonoBehaviour
 
     protected Vector2 targetVelocity;
     protected bool grounded;
-    protected Vector2 groundNormal;
+    protected Vector2 groundNormal = Vector2.up;
     protected Rigidbody2D rb;
     protected Vector2 velocity;
     protected ContactFilter2D contactFilter;
@@ -40,8 +40,8 @@ public class PhysicsBody : MonoBehaviour
         ComputeVelocity();
     }
 
-    protected virtual void ComputeVelocity() {
-
+    protected virtual void ComputeVelocity() { 
+        // This is left empty for sub-classes
     }
 
     void FixedUpdate() {
@@ -51,15 +51,11 @@ public class PhysicsBody : MonoBehaviour
         grounded = false;
         
         Vector2 deltaPosition = velocity * Time.deltaTime;
-
         Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-
         Vector2 move = moveAlongGround * deltaPosition.x;
-
         Movement (move, false);
 
         move = Vector2.up * deltaPosition.y;
-
         Movement (move, true);
     }
 
