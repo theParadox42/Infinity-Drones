@@ -36,7 +36,12 @@ public class PhysicsBody : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        targetVelocity = Vector2.zero;
+        ComputeVelocity();
+    }
+
+    protected virtual void ComputeVelocity() {
+
     }
 
     void FixedUpdate() {
@@ -67,7 +72,7 @@ public class PhysicsBody : MonoBehaviour
             hitBufferList.Clear ();
             for (int i = 0; i < count; i++)
             {
-                hitBufferList.Add(hitBuffer [i]);
+                hitBufferList.Add(hitBuffer[i]);
             }
 
             for (int i = 0; i < hitBufferList.Count; i++)
