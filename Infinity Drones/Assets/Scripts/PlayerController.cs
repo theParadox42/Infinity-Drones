@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class PlayerController : PhysicsBody
 {
-
-    public float maxSpeed = 7f;
-    public float jumpTakeOffSpeed = 5f;
+    
+    [SerializeField] private float maxSpeed = 20f;
+    [SerializeField] private float moveSpeed = 7f;
+    [SerializeField] private float jumpTakeOffSpeed = 6.2f;
 
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -20,7 +21,9 @@ public class PlayerController : PhysicsBody
     
     protected override void ComputeVelocity() {
         Vector2 move = Vector2.zero;
-        move.x = Input.GetAxis("Horizontal");
+        if (Mathf.Abs(velocity.magnitude) < maxSpeed) {
+            move.x = Input.GetAxis("Horizontal");
+        }
 
         if (Input.GetButtonDown("Jump") && grounded) {
             animator.SetTrigger("jump");
@@ -42,7 +45,7 @@ public class PlayerController : PhysicsBody
         animator.SetFloat("x-speed", xSpeed);
         animator.SetFloat("y-speed", velocity.y);
 
-        targetVelocity = move * maxSpeed;
+        targetVelocity = move * moveSpeed;
 
     }
 
