@@ -15,7 +15,7 @@ public class PhysicsBody : MonoBehaviour
     protected Vector2 velocity;
     protected ContactFilter2D contactFilter;
     protected RaycastHit2D[] hitBuffer = new RaycastHit2D[16];
-    protected List<RaycastHit2D>hitBufferList = new List<RaycastHit2D>(16);
+    protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
 
 
     protected const float minMoveDistance = 0.001f;
