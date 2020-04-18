@@ -165,5 +165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minGroundNormalY: 0.65
   gravityModifyer: 1
-  maxSpeed: 7
-  jumpTakeOffSpeed: 5
+  maxSpeed: 15
+  moveSpeed: 7
+  jumpTakeOffSpeed: 6.5
