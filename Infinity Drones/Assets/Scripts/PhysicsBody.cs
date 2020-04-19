@@ -64,6 +64,10 @@ public class PhysicsBody : MonoBehaviour
         
         if (distance > minMoveDistance) {
 
+            if (yMovement) {
+                groundNormal = Vector2.up;
+            }
+
             int count = rb.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
             hitBufferList.Clear ();
             for (int i = 0; i < count; i++)
