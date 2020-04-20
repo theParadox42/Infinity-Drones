@@ -57,10 +57,10 @@ public class PlayerController : PhysicsBody
     }
 
     void Fire() {
-        
+        Vector2 fireVector = GetFireVector ();
         bool flipSprite = spriteRenderer.flipX ? fireVector.x < 0f : fireVector.x > 0f;
         FlipSprite(flipSprite);
-        GameObject droneToFireAt = GetClosestObject("Proner", fireVector);
+        GameObject droneToFireAt = GetObjectToFireAt ("Proner", fireVector);
     }
 
     void FlipSprite(bool execute) {
@@ -70,11 +70,11 @@ public class PlayerController : PhysicsBody
     }
 
     Vector2 GetFireVector () {
-        Vector2 fireVector;
-        var 
-        if (gamepad != null) {
-            fireVector = gamepad.rightStick.ReadValue();
-        } else if (mouse != null) {
+        float minMag = 0.1f;
+        Vector2 fireVector = new Vector2(Input.GetAxis("Joy X"), Input.GetAxis("Joy Y"));
+        if (fireVector.magnitude > minMag) {
+            Debug.Log("Using Joystick");
+        } else if (Input.mousePosition.magnitude >= minMag) {
             fireVector = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         } else {
             fireVector = new Vector2(spriteRenderer.flipX ? -1f : 1f, 0f);
@@ -83,19 +83,15 @@ public class PlayerController : PhysicsBody
         return fireVector;
     }
 
-    GameObject GetObjectToFireAt(string tag, Vector2 firePosition) {
+    GameObject GetObjectToFireAt(string tag, float rotation) {
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
-        GameObject closestObject;
+        GameObject closestObject = null;
         float closestDistance = firePosition.magnitude;
         foreach (GameObject obj in objectsWithTag)
         {
-            float angle = AngleBetweenVectors(transform.position, obj);
+            float angle = Vector2.Angle(transform.position, obj.transform.position);
         }
         return closestObject;
-    }
-
-    float AngleBetweenVectors (Vector2 vec1, Vector2 vec2) {
-        return Mathf.Atan2(vec2.y - vec1.y, vec2.x - vec1.x) * Mathf.Rad2Deg;
     }
 
 }
