@@ -58,9 +58,22 @@ public class PlayerController : PhysicsBody
 
     void Fire() {
         Vector2 fireVector = GetFireVector ();
+
+        // Graphics update
         bool flipSprite = spriteRenderer.flipX ? fireVector.x < 0f : fireVector.x > 0f;
         FlipSprite(flipSprite);
-        GameObject droneToFireAt = GetObjectToFireAt ("Proner", fireVector);
+        Animator.SetTrigger("shoot");
+
+        // TODO: Make this so it can't go strait up
+        float fireRotation = Mathf.Constrain(Vector2.Angle(Vector2.zero, fireVector);
+        Debug.Log(fireRotation);
+        // Lock onto proner
+        GameObject droneToFireAt = GetObjectToFireAt ("Proner", fireRotation, fireVector.x > 0);
+        if (droneToFireAt) {
+            fireVector = (droneToFireAt.transform.position - transform.position).normalized;
+        }
+        // Create bullet here
+        Debug.Log(fireVector);
     }
 
     void FlipSprite(bool execute) {
@@ -79,17 +92,29 @@ public class PlayerController : PhysicsBody
         } else {
             fireVector = new Vector2(spriteRenderer.flipX ? -1f : 1f, 0f);
         }
-        fireVector = fireVector.normalized;
-        return fireVector;
+        return fireVector.normalized;
     }
 
-    GameObject GetObjectToFireAt(string tag, float rotation) {
+    GameObject GetObjectToFireAt(string tag, float fireAngle, bool goesRight) {
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
-        GameObject closestObject = null;
-        float closestDistance = firePosition.magnitude;
-        foreach (GameObject obj in objectsWithTag)
-        {
-            float angle = Vector2.Angle(transform.position, obj.transform.position);
+        GameObject bestObject = null;
+        float closestDistance = 10f;
+        foreach (GameObject obj in objectsWithTag) {
+            Vector2 displacement = obj.transform.position - transform.position;
+            float distance = displacement.magnitude;
+            // Checks if it is the right direction
+            if ((displacement.x > 0 && goesRight) || (displacement.x < 0 && !goesRight)) {
+                // How far out something can be
+                float margin = 30f;
+                float relativeAngle = Vector2.Angle(transform.position, obj.transform.position) - fireAngle;
+                // Check if it is out of the fire range
+                if (relativeAngle > -margin && relativeAngle < margin) {
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        bestObject = obj;
+                    }
+                }
+            }
         }
         return closestObject;
     }

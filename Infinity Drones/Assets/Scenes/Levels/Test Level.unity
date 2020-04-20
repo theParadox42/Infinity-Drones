@@ -5599,7 +5599,7 @@ PrefabInstance:
     - target: {fileID: 3574605834681658158, guid: effcfd2053e7c4fb8ad05510a6eb6b92,
         type: 3}
       propertyPath: m_StretchFill
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3574605834681658158, guid: effcfd2053e7c4fb8ad05510a6eb6b92,
         type: 3}
