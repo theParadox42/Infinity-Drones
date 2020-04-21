@@ -8,6 +8,10 @@ public class PlayerController : PhysicsBody
     [SerializeField] float maxSpeed = 20f;
     [SerializeField] float moveSpeed = 7f;
     [SerializeField] float jumpTakeOffSpeed = 6.2f;
+    
+    [SerializeField] GameObject bulletPrefab = null;
+    [SerializeField] float bulletSpeed = 12f;
+    [SerializeField] Vector2 gunOffset = new Vector2(0.5, 0.1);
 
     SpriteRenderer spriteRenderer;
     Animator animator;
@@ -65,20 +69,24 @@ public class PlayerController : PhysicsBody
         Animator.SetTrigger("shoot");
 
         // TODO: Make this so it can't go strait up
-        float fireRotation = Mathf.Constrain(Vector2.Angle(Vector2.zero, fireVector);
+        float fireRotation = Vector2.Angle(Vector2.zero, fireVector);
         Debug.Log(fireRotation);
         // Lock onto proner
         GameObject droneToFireAt = GetObjectToFireAt ("Proner", fireRotation, fireVector.x > 0);
         if (droneToFireAt) {
             fireVector = (droneToFireAt.transform.position - transform.position).normalized;
+            fireRotation = Vector2.Angle(Vector2.zero, fireVector);
         }
         // Create bullet here
-        Debug.Log(fireVector);
+        GameObject newBullet = Instantiate(bulletPrefab, transform.position + gunOffset, fireRotation);
+        newBullet.GetComponent<Rigidbody2D>().velocity = fireVector * bulletSpeed;
+        Destroy(newBullet, 5.0f);
     }
 
     void FlipSprite(bool execute) {
         if (execute) {
             spriteRenderer.flipX = !spriteRenderer.flipX;
+            gunOffset.x *= -1;
         }
     }
 
