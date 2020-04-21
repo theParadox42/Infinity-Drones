@@ -11,7 +11,7 @@ public class PlayerController : PhysicsBody
     
     [SerializeField] GameObject bulletPrefab = null;
     [SerializeField] float bulletSpeed = 12f;
-    [SerializeField] Vector2 gunOffset = new Vector2(0.5, 0.1);
+    [SerializeField] Vector2 gunOffset = new Vector2(0.5f, 0.1f);
 
     SpriteRenderer spriteRenderer;
     Animator animator;
@@ -26,17 +26,13 @@ public class PlayerController : PhysicsBody
     void Start() {
         cam = Camera.main;
     }
-
-    void Update() {
-        if (Input.GetAxisRaw("Fire1") != 0) {
-            Fire();
-        }
-    }
     
     protected override void ComputeVelocity() {
         Vector2 move = Vector2.zero;
+        Debug.Log("okay");
         if (Mathf.Abs(velocity.magnitude) < maxSpeed) {
             move.x = Input.GetAxis("Horizontal");
+            Debug.Log(move.x);
         }
 
         if (Input.GetButtonDown("Jump") && grounded) {
@@ -58,6 +54,10 @@ public class PlayerController : PhysicsBody
         animator.SetFloat("y-speed", velocity.y);
 
         targetVelocity = move * moveSpeed;
+
+        if (Input.GetAxisRaw("Fire1") != 0) {
+            Fire();
+        }
     }
 
     void Fire() {
@@ -66,19 +66,21 @@ public class PlayerController : PhysicsBody
         // Graphics update
         bool flipSprite = spriteRenderer.flipX ? fireVector.x < 0f : fireVector.x > 0f;
         FlipSprite(flipSprite);
-        Animator.SetTrigger("shoot");
+        animator.SetTrigger("shoot");
 
         // TODO: Make this so it can't go strait up
-        float fireRotation = Vector2.Angle(Vector2.zero, fireVector);
+        float fireRotation = GetAngle(fireVector);
         Debug.Log(fireRotation);
         // Lock onto proner
         GameObject droneToFireAt = GetObjectToFireAt ("Proner", fireRotation, fireVector.x > 0);
         if (droneToFireAt) {
             fireVector = (droneToFireAt.transform.position - transform.position).normalized;
-            fireRotation = Vector2.Angle(Vector2.zero, fireVector);
+            fireRotation = GetAngle(fireVector);
         }
+
         // Create bullet here
-        GameObject newBullet = Instantiate(bulletPrefab, transform.position + gunOffset, fireRotation);
+        Vector3 gunOffset3 = new Vector3(gunOffset.x, gunOffset.y, 0);
+        GameObject newBullet = Instantiate(bulletPrefab, transform.position + gunOffset3, transform.rotation);
         newBullet.GetComponent<Rigidbody2D>().velocity = fireVector * bulletSpeed;
         Destroy(newBullet, 5.0f);
     }
@@ -92,10 +94,8 @@ public class PlayerController : PhysicsBody
 
     Vector2 GetFireVector () {
         float minMag = 0.1f;
-        Vector2 fireVector = new Vector2(Input.GetAxis("Joy X"), Input.GetAxis("Joy Y"));
-        if (fireVector.magnitude > minMag) {
-            Debug.Log("Using Joystick");
-        } else if (Input.mousePosition.magnitude >= minMag) {
+        Vector2 fireVector;
+        if (Input.mousePosition.magnitude >= minMag) {
             fireVector = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         } else {
             fireVector = new Vector2(spriteRenderer.flipX ? -1f : 1f, 0f);
@@ -114,7 +114,7 @@ public class PlayerController : PhysicsBody
             if ((displacement.x > 0 && goesRight) || (displacement.x < 0 && !goesRight)) {
                 // How far out something can be
                 float margin = 30f;
-                float relativeAngle = Vector2.Angle(transform.position, obj.transform.position) - fireAngle;
+                float relativeAngle = GetAngle(displacement);
                 // Check if it is out of the fire range
                 if (relativeAngle > -margin && relativeAngle < margin) {
                     if (distance < closestDistance) {
@@ -124,7 +124,11 @@ public class PlayerController : PhysicsBody
                 }
             }
         }
-        return closestObject;
+        return bestObject;
+    }
+
+    float GetAngle(Vector2 vector) {
+        return Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
     }
 
 }

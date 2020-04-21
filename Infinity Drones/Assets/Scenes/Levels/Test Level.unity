@@ -4662,12 +4662,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 618073032, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: gravityModifyer
-      value: 2
+      propertyPath: jumpTakeOffSpeed
+      value: 6.2
       objectReference: {fileID: 0}
     - target: {fileID: 618073032, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: jumpTakeOffSpeed
-      value: 10
+      propertyPath: maxSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1128428353, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
       propertyPath: m_Size.x
