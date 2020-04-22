@@ -9,7 +9,11 @@ public class Proner : MonoBehaviour
     [SerializeField] float droneAcceleration = 2f;
     [SerializeField] float droneTargetSpeed = 8f;
     [SerializeField] float targetDistance = 4f;
-    [SerializeField] float reloadTime = 0.3f;
+
+    [SerializeField] float bulletReloadTime = 0.3f;
+    [SerializeField] float bulletSpeed = 15f;
+    [SerializeField] float inconsistency = 10f;
+    float bulletTimer;
 
 
     private Vector2 playerDisplacement;
@@ -37,10 +41,5 @@ public class Proner : MonoBehaviour
     float GetSpeedModifyer (float distance) {
         float n = Mathf.Pow(2, distance);
         return 2f * n / (n + 1f) - 1f;
-    }
-    
-    // Do physics here
-    void FixedUpdate() {
-        
     }
 }
