@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1128428352}
   - component: {fileID: 1128428353}
   - component: {fileID: 618073032}
+  - component: {fileID: 1980136808}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -149,7 +150,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.9375}
+  m_Size: {x: 0.45, y: 0.8875}
   m_EdgeRadius: 0
 --- !u!114 &618073032
 MonoBehaviour:
@@ -165,10 +166,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minGroundNormalY: 0.65
   gravityModifyer: 1
-  maxSpeed: 15
+  maxSpeed: 20
   moveSpeed: 7
-  jumpTakeOffSpeed: 6.5
+  jumpTakeOffSpeed: 6.2
+  flipped: 0
+--- !u!114 &1980136808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743639473737871204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e736be556f6074274b1170c949b1d6f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3841581558611508524, guid: 9f7c23f2b4f27455f87ef186bf69bc3a,
     type: 3}
-  bulletSpeed: 12
   gunOffset: {x: 0.5, y: 0.1}
+  bulletSpeed: 15
+  bulletReloadTime: 1

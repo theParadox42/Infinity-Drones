@@ -5,14 +5,14 @@ using UnityEngine;
 public class Proner : MonoBehaviour
 {
 
-    [SerializeField] private PlayerController player = null;
-    [SerializeField] private float droneAcceleration = 2f;
-    [SerializeField] private float droneTargetSpeed = 8f;
-    [SerializeField] private float targetDistance = 4f;
+    [SerializeField] PlayerController player = null;
+    [SerializeField] float droneAcceleration = 2f;
+    [SerializeField] float droneTargetSpeed = 8f;
+    [SerializeField] float targetDistance = 4f;
+    [SerializeField] float reloadTime = 0.3f;
+
 
     private Vector2 playerDisplacement;
-    // private Vector2 velocity;
-
     private Rigidbody2D rb;
 
     // Initialize stuff here

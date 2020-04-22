@@ -8,7 +8,8 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] GameObject bulletPrefab = null;
     [SerializeField] Vector2 gunOffset = new Vector2(0.5f, 0.1f);
     [SerializeField] float bulletSpeed = 15f;
-    [SerializeField] float bulletReloadTime = 1f;
+    [SerializeField] float bulletReloadTime = 0.2f;
+    [SerializeField] float inconsistency = 5f;
     float bulletTimer;
 
     Camera cam;
@@ -40,7 +41,7 @@ public class PlayerGun : MonoBehaviour
         float fireRotation = ClampGunAngle(GetAngle(fireVector));
 
         // Graphics update
-        bool flipSprite = spriteRenderer.flipX ? fireVector.x < 0f : fireVector.x > 0f;
+        bool flipSprite = !playerController.flipped ? fireVector.x < 0f : fireVector.x > 0f;
         playerController.FlipSprite(flipSprite);
         animator.SetTrigger("shoot");
         
@@ -66,10 +67,10 @@ public class PlayerGun : MonoBehaviour
     Vector2 GetFireVector () {
         float minMag = 0.1f;
         Vector2 fireVector;
-        if (Input.mousePosition.magnitude >= minMag) {
+        if (Input.GetMouseButton(0)) {
             fireVector = cam.ScreenToWorldPoint(Input.mousePosition) - GunPosition();
         } else {
-            fireVector = new Vector2(spriteRenderer.flipX ? -1f : 1f, 0f);
+            fireVector = new Vector2(playerController.flipped ? -1f : 1f, 0f);
         }
         return fireVector.normalized;
     }
@@ -86,7 +87,7 @@ public class PlayerGun : MonoBehaviour
         } else if (rot <= -90f && rot > -180f + maxGunAngle) {
             newRot = -180f + maxGunAngle;
         }
-        return newRot;
+        return newRot + Random.Range(-inconsistency, inconsistency);
     }
 
     GameObject GetObjectToFireAt(string tag, float fireAngle, bool goesRight) {
@@ -119,7 +120,7 @@ public class PlayerGun : MonoBehaviour
 
     Vector3 GunPosition() {
         float flipDirection = playerController.flipped ? -1 : 1;
-        Vector3 gunOffset3 = new Vector3(gunOffset.x * flipDirection, gunOffset.y, 5f);
+        Vector3 gunOffset3 = new Vector3(gunOffset.x * flipDirection, gunOffset.y, 0.1f);
         return transform.position + gunOffset3;
     }
 }

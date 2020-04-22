@@ -46,15 +46,15 @@ public class PlayerController : PhysicsBody
         animator.SetFloat("x-speed", xSpeed);
         animator.SetFloat("y-speed", velocity.y);
 
+        targetVelocity = move * moveSpeed;
+
         if (tempKnockback.magnitude > 0.1) {
             targetVelocity += tempKnockback;
-            tempKnockback *= 0.5;
+            tempKnockback *= 0.95f;
         }
-
-        targetVelocity = move * moveSpeed;
     }
 
-    void FlipSprite(bool execute) {
+    public void FlipSprite(bool execute) {
         if (execute) {
             spriteRenderer.flipX = !spriteRenderer.flipX;
             flipped = !flipped;
