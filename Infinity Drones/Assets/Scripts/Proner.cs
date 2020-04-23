@@ -22,6 +22,7 @@ public class Proner : MonoBehaviour
     // Initialize stuff here
     void Start()
     {
+        bulletTimer = bulletReloadTime;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -35,6 +36,11 @@ public class Proner : MonoBehaviour
             rb.velocity *= 0.5f;
         } else {
             rb.velocity *= 0.98f;
+        }
+
+        bulletTimer -= Time.deltaTime;
+        if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 2) {
+            bulletTimer = bulletReloadTime;
         }
     }
 
