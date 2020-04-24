@@ -13,24 +13,23 @@ public class Proner : MonoBehaviour
     [SerializeField] GameObject bulletPrefab = null;
     [SerializeField] float bulletReloadTime = 0.3f;
     [SerializeField] float bulletSpeed = 15f;
-    // [SerializeField] float inconsistency = 10f;
+    [SerializeField] float inaccuracy = 10f;
     float bulletTimer;
 
-
-    private Vector2 playerDisplacement;
+    private Vector2 tempKnockback;
     private Rigidbody2D rb;
 
     // Initialize stuff here
     void Start()
     {
-        bulletTimer = bulletReloadTime;
+        bulletTimer = bulletReloadTime * Random.Range(1f, 2f);
         rb = GetComponent<Rigidbody2D>();
     }
 
     // Determin direction to move here
     void Update()
     {
-        playerDisplacement = player.transform.position - transform.position;
+        Vector2 playerDisplacement = player.transform.position - transform.position;
         var modifyer = GetSpeedModifyer(playerDisplacement.magnitude - targetDistance);
         rb.velocity += playerDisplacement.normalized * droneAcceleration * modifyer;
         if (rb.velocity.magnitude > droneTargetSpeed) {
@@ -39,17 +38,40 @@ public class Proner : MonoBehaviour
             rb.velocity *= 0.98f;
         }
 
+        if (tempKnockback > 0.1) {
+            rb.velocity += tempKnockback;
+            tempKnockback *= 0.95f;
+        }
+
         bulletTimer -= Time.deltaTime;
         if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 2) {
             bulletTimer = bulletReloadTime;
-            var newBullet = Instantiate(bulletPrefab, transform.position + new Vector3(0f, 0f, 0.1f), transform.rotation);
-            newBullet.GetComponent<Rigidbody2D>().velocity = playerDisplacement.normalized * bulletSpeed;
-            Destroy(newBullet, 10f);
+            Fire(playerDisplacement);
         }
     }
 
     float GetSpeedModifyer (float distance) {
         float n = Mathf.Pow(2, distance);
         return 2f * n / (n + 1f) - 1f;
+    }
+
+    void Fire(Vector2 playerDisplacement) {
+        Vector2 bulletVector = playerDisplacement.normalized;
+        float bulletAngle = GetAngle(bulletVector) + Random.Range(-inaccuracy, inaccuracy);
+        bulletAngle *= Mathf.Deg2Rad;
+        bulletVector = new Vector2(Mathf.Cos(bulletAngle), Mathf.Sin(bulletAngle)) * bulletSpeed;
+        
+        // Create bullet
+        GameObject newBullet = Instantiate(bulletPrefab, transform.position + new Vector3(0f, 0f, 0.1f), Quaternion.LookRotation(Vector3.forward, bulletVector));
+        newBullet.GetComponent<Rigidbody2D>().velocity = bulletVector;
+        Destroy(newBullet, 10f);
+    }
+
+    float GetAngle(Vector2 vector) {
+        return Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
+    }
+
+    public void AddKnockback (Vector2 knockback) {
+        tempKnockback += knockback;
     }
 }

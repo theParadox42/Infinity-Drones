@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2133138822844286703}
   - component: {fileID: 2133138822844286700}
   - component: {fileID: 1212195069}
-  - component: {fileID: 1212195068}
   - component: {fileID: 1212195067}
+  - component: {fileID: 2136202756}
   m_Layer: 10
   m_Name: Proner
   m_TagString: Proner
@@ -125,8 +125,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &1212195068
-BoxCollider2D:
+--- !u!114 &1212195067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133138822844286701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb7e53a8bee743eeb2113414ecbc85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  droneAcceleration: 0.1
+  droneTargetSpeed: 8
+  targetDistance: 4
+  bulletPrefab: {fileID: 3841581558611508524, guid: 1759ce3ea10364fbf809340a691d81e0,
+    type: 3}
+  bulletReloadTime: 2
+  bulletSpeed: 8
+  inaccuracy: 10
+--- !u!60 &2136202756
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -148,26 +169,27 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.8125}
-  m_EdgeRadius: 0
---- !u!114 &1212195067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2133138822844286701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbb7e53a8bee743eeb2113414ecbc85a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  droneAcceleration: 0.1
-  droneTargetSpeed: 8
-  targetDistance: 4
-  bulletPrefab: {fileID: 3841581558611508524, guid: 1759ce3ea10364fbf809340a691d81e0,
-    type: 3}
-  bulletReloadTime: 1
-  bulletSpeed: 15
+  m_Points:
+    m_Paths:
+    - - {x: -0.07382107, y: -0.3125}
+      - {x: -0.11241388, y: 0.09798813}
+      - {x: -0.07142782, y: -0.3136711}
+      - {x: -0.22380567, y: -0.2517662}
+      - {x: -0.30031514, y: -0.41474342}
+      - {x: -0.3845179, y: -0.40772676}
+      - {x: -0.5213475, y: -0.053373814}
+      - {x: -0.35110283, y: 0.25776148}
+      - {x: -0.48442388, y: 0.40862465}
+      - {x: -0.084460735, y: 0.41213322}
+      - {x: -0.20374799, y: 0.25776148}
+      - {x: -0.11603665, y: 0.09286451}
+      - {x: 0.13399291, y: 0.088237286}
+      - {x: 0.21738029, y: 0.27341127}
+      - {x: 0.07002568, y: 0.41024017}
+      - {x: 0.47349715, y: 0.4067316}
+      - {x: 0.33666754, y: 0.26639366}
+      - {x: 0.51208997, y: -0.03533268}
+      - {x: 0.3752606, y: -0.4177537}
+      - {x: 0.30859995, y: -0.41424513}
+      - {x: 0.23141408, y: -0.21426392}
+      - {x: 0.070025444, y: -0.3089919}

@@ -9,7 +9,7 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] Vector2 gunOffset = new Vector2(0.5f, 0.1f);
     [SerializeField] float bulletSpeed = 15f;
     [SerializeField] float bulletReloadTime = 0.2f;
-    [SerializeField] float inconsistency = 5f;
+    [SerializeField] float inaccuracy = 5f;
     float bulletTimer;
 
     float rotateSpeed;
@@ -59,7 +59,7 @@ public class PlayerGun : MonoBehaviour
         Vector2 bulletVector = new Vector2(Mathf.Cos(fireRotation), Mathf.Sin(fireRotation));
 
         // Create bullet here
-        GameObject newBullet = Instantiate(bulletPrefab, GunPosition(), Quaternion.LookRotation(new Vector3(-bulletVector.y, 0, bulletVector.x, )));
+        GameObject newBullet = Instantiate(bulletPrefab, GunPosition(), Quaternion.LookRotation(Vector3.forward, bulletVector));
         newBullet.GetComponent<Rigidbody2D>().velocity = bulletVector * bulletSpeed;
         Destroy(newBullet, 10f);
 
@@ -89,7 +89,7 @@ public class PlayerGun : MonoBehaviour
         } else if (rot <= -90f && rot > -180f + maxGunAngle) {
             newRot = -180f + maxGunAngle;
         }
-        return newRot + Random.Range(-inconsistency, inconsistency);
+        return newRot + Random.Range(-inaccuracy, inaccuracy);
     }
 
     GameObject GetObjectToFireAt(string tag, float fireAngle, bool goesRight) {
