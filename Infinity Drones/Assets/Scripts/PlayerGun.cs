@@ -43,7 +43,7 @@ public class PlayerGun : MonoBehaviour
         float fireRotation = ClampGunAngle(GetAngle(fireVector));
 
         // Graphics update
-        bool flipSprite = !playerController.flipped ? fireVector.x < 0f : fireVector.x > 0f;
+        bool flipSprite = playerController.flipped ? fireVector.x < 0f : fireVector.x > 0f;
         playerController.FlipSprite(flipSprite);
         animator.SetTrigger("shoot");
         
@@ -72,7 +72,7 @@ public class PlayerGun : MonoBehaviour
         if (Input.GetMouseButton(0)) {
             fireVector = cam.ScreenToWorldPoint(Input.mousePosition) - GunPosition();
         } else {
-            fireVector = new Vector2(playerController.flipped ? -1f : 1f, 0f);
+            fireVector = new Vector2(playerController.flipped ? 1f : -1f, 0f);
         }
         return fireVector.normalized;
     }
@@ -121,7 +121,7 @@ public class PlayerGun : MonoBehaviour
     }
 
     Vector3 GunPosition() {
-        float flipDirection = playerController.flipped ? -1 : 1;
+        float flipDirection = playerController.flipped ? 1 : -1;
         Vector3 gunOffset3 = new Vector3(gunOffset.x * flipDirection, gunOffset.y, 0.1f);
         return transform.position + gunOffset3;
     }

@@ -53,13 +53,20 @@ public class PhysicsBody : MonoBehaviour
         Vector2 deltaPosition = velocity * Time.deltaTime;
         Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
         Vector2 move = moveAlongGround * deltaPosition.x;
-        Movement (move, false);
+        Movement (move);
 
         move = Vector2.up * deltaPosition.y;
         Movement (move, true);
     }
 
-    void Movement(Vector2 move, bool yMovement) {
+    protected void Movement(Vector2 move) {
+        Movement(move, false, false);
+    }
+    protected void Movement(Vector2 move, bool yMovement) {
+        Movement(move, yMovement, false);
+    }
+
+    protected void Movement(Vector2 move, bool yMovement, bool nonNegative) {
         float distance = move.magnitude;
         
         if (distance > minMoveDistance) {
@@ -94,7 +101,8 @@ public class PhysicsBody : MonoBehaviour
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
         }
-
-        rb.position = rb.position + move.normalized * distance;
+        if (distance > 0 || !nonNegative) {
+            rb.position = rb.position + move.normalized * distance;
+        }
     }
 }

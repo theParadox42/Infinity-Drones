@@ -14,11 +14,12 @@ public class PlayerController : PhysicsBody
     SpriteRenderer spriteRenderer;
     Animator animator;
 
-    public bool flipped = false;
+    public bool flipped;
 
     // Start is called before the first frame update
     void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        flipped = spriteRenderer.flipX;
         animator = GetComponent<Animator>();
     }
     
@@ -49,15 +50,17 @@ public class PlayerController : PhysicsBody
         targetVelocity = move * moveSpeed;
 
         if (tempKnockback.magnitude > 0.1) {
-            targetVelocity += tempKnockback;
-            tempKnockback *= 0.95f;
+            Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
+            move = moveAlongGround * tempKnockback.x * Time.deltaTime;
+            Movement(move * Vector2.right, false, true);
+            tempKnockback *= 0.9f;
         }
     }
 
     public void FlipSprite(bool execute) {
         if (execute) {
             spriteRenderer.flipX = !spriteRenderer.flipX;
-            flipped = !flipped;
+            flipped = spriteRenderer.flipX;
         }
     }
 

@@ -38,13 +38,13 @@ public class Proner : MonoBehaviour
             rb.velocity *= 0.98f;
         }
 
-        if (tempKnockback > 0.1) {
+        if (tempKnockback.magnitude > 0.1f) {
             rb.velocity += tempKnockback;
             tempKnockback *= 0.95f;
         }
 
         bulletTimer -= Time.deltaTime;
-        if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 2) {
+        if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 1.5) {
             bulletTimer = bulletReloadTime;
             Fire(playerDisplacement);
         }

@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerGun.cs" />
      <Compile Include="Assets\Scripts\Proner.cs" />
+     <Compile Include="Assets\Scripts\RigidPlayer.cs" />
  <Reference Include="UnityEngine">
  <HintPath>/Users/nathaniel/Applications/Coding/unity-editors/2019.3.10f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
