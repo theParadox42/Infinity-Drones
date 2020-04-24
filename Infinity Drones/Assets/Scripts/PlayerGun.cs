@@ -12,6 +12,8 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] float inconsistency = 5f;
     float bulletTimer;
 
+    float rotateSpeed;
+
     Camera cam;
     Animator animator;
     PlayerController playerController;
@@ -53,19 +55,19 @@ public class PlayerGun : MonoBehaviour
         }
 
         
-        // Create bullet here
-        GameObject newBullet = Instantiate(bulletPrefab, GunPosition(), transform.rotation);
         fireRotation *= Mathf.Deg2Rad;
         Vector2 bulletVector = new Vector2(Mathf.Cos(fireRotation), Mathf.Sin(fireRotation));
+
+        // Create bullet here
+        GameObject newBullet = Instantiate(bulletPrefab, GunPosition(), Quaternion.LookRotation(new Vector3(-bulletVector.y, 0, bulletVector.x, )));
         newBullet.GetComponent<Rigidbody2D>().velocity = bulletVector * bulletSpeed;
-        Destroy(newBullet, 5.0f);
+        Destroy(newBullet, 10f);
 
         // Knockback
         playerController.AddKnockback(-bulletVector * bulletSpeed / 10);
     }
 
     Vector2 GetFireVector () {
-        float minMag = 0.1f;
         Vector2 fireVector;
         if (Input.GetMouseButton(0)) {
             fireVector = cam.ScreenToWorldPoint(Input.mousePosition) - GunPosition();
@@ -76,7 +78,7 @@ public class PlayerGun : MonoBehaviour
     }
 
     float ClampGunAngle (float rot) {
-        float maxGunAngle = 10f;
+        float maxGunAngle = 50f;
         float newRot = rot;
         if (rot > maxGunAngle && rot < 90f) {
             newRot = maxGunAngle;

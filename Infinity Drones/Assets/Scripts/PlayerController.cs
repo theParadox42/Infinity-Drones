@@ -62,7 +62,7 @@ public class PlayerController : PhysicsBody
     }
 
     public void AddKnockback(Vector2 knockback) {
-        tempKnockback = knockback;
+        tempKnockback += knockback;
     }
 
 }

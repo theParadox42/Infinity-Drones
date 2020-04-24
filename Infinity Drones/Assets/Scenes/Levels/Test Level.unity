@@ -4661,14 +4661,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 618073032, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: moveSpeed
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980136808, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: bulletReloadTime
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 6743639473737871204, guid: 217161ad6cff74d089a09e2d07441f20,
         type: 3}
       propertyPath: m_Name

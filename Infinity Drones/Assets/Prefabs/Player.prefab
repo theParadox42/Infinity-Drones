@@ -167,7 +167,7 @@ MonoBehaviour:
   minGroundNormalY: 0.65
   gravityModifyer: 1
   maxSpeed: 20
-  moveSpeed: 7
+  moveSpeed: 6
   jumpTakeOffSpeed: 6.2
   flipped: 0
 --- !u!114 &1980136808
@@ -186,4 +186,5 @@ MonoBehaviour:
     type: 3}
   gunOffset: {x: 0.5, y: 0.1}
   bulletSpeed: 15
-  bulletReloadTime: 1
+  bulletReloadTime: 0.2
+  inconsistency: 5

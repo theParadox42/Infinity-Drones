@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1212195069}
   - component: {fileID: 1212195068}
   - component: {fileID: 1212195067}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Proner
   m_TagString: Proner
   m_Icon: {fileID: 0}
@@ -167,3 +167,7 @@ MonoBehaviour:
   droneAcceleration: 0.1
   droneTargetSpeed: 8
   targetDistance: 4
+  bulletPrefab: {fileID: 3841581558611508524, guid: 1759ce3ea10364fbf809340a691d81e0,
+    type: 3}
+  bulletReloadTime: 1
+  bulletSpeed: 15
