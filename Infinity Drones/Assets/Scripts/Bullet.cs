@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] DetatchParticles detatchParticles = null;
     Rigidbody2D rb;
 
     void Start () {
@@ -22,6 +23,9 @@ public class Bullet : MonoBehaviour
             col.GetComponent<PlayerController>().AddKnockback(rb.velocity / 5);
         } else if (col.tag == "Proner") {
             col.GetComponent<Proner>().AddKnockback(rb.velocity / 10);
+        }
+        if (detatchParticles) {
+            detatchParticles.Detatch();
         }
         Destroy(gameObject);
     }

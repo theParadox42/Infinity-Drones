@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class DetatchParticles : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    bool detached = false;
+    ParticleSystem myParticleSystem;
+
+    void Start () {
+        myParticleSystem = GetComponent<ParticleSystem>();
+
+    }
+    void Update () {
+        if (detached && !myParticleSystem.IsAlive()) {
+            if (myParticleSystem.particleCount <= 0) {
+                Destroy(gameObject);
+            }
+        }
+    }
+    public void Detatch() {
+        transform.parent = null;
+        myParticleSystem.Stop();
+        detached = true;
     }
 }
