@@ -19,7 +19,7 @@ public class PhysicsBody : MonoBehaviour
 
 
     protected const float minMoveDistance = 0.001f;
-    protected const float shellRadius = 0.02f;
+    protected float shellRadius = 0.02f;
 
     void OnEnable() {
         rb = GetComponent<Rigidbody2D>();

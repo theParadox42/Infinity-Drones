@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1128428353}
   - component: {fileID: 618073032}
   - component: {fileID: 1980136808}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.8
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: a6329072b27994571b3062110ec67bfe, type: 2}
   m_Interpolate: 0
@@ -150,7 +150,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.8875}
+  m_Size: {x: 0.41, y: 0.8375}
   m_EdgeRadius: 0
 --- !u!114 &618073032
 MonoBehaviour:
@@ -187,4 +187,4 @@ MonoBehaviour:
   gunOffset: {x: 0.5, y: 0.1}
   bulletSpeed: 15
   bulletReloadTime: 0.2
-  inconsistency: 5
+  inaccuracy: 5

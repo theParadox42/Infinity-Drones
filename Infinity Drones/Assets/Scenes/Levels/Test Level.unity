@@ -4544,35 +4544,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 618073032, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1128428352, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: m_BodyType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1128428352, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: m_GravityScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1128428352, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980136808, guid: 217161ad6cff74d089a09e2d07441f20, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6743639473737871204, guid: 217161ad6cff74d089a09e2d07441f20,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6743639473737871204, guid: 217161ad6cff74d089a09e2d07441f20,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6743639473737871206, guid: 217161ad6cff74d089a09e2d07441f20,
         type: 3}

@@ -21,6 +21,7 @@ public class PlayerController : PhysicsBody
         spriteRenderer = GetComponent<SpriteRenderer>();
         flipped = spriteRenderer.flipX;
         animator = GetComponent<Animator>();
+        shellRadius = 0.04f;
     }
     
     protected override void ComputeVelocity() {
@@ -38,7 +39,7 @@ public class PlayerController : PhysicsBody
             }
         }
 
-        bool flipSprite = spriteRenderer.flipX ? move.x < -0.01f : move.x > 0.01f;
+        bool flipSprite = flipped ? move.x < -0.01f : move.x > 0.01f;
         FlipSprite(flipSprite);
 
         float xSpeed = Mathf.Abs(velocity.x);
@@ -50,9 +51,14 @@ public class PlayerController : PhysicsBody
         targetVelocity = move * moveSpeed;
 
         if (tempKnockback.magnitude > 0.1) {
-            Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-            move = moveAlongGround * tempKnockback.x * Time.deltaTime;
-            Movement(move * Vector2.right, false, true);
+            if (grounded) {
+                Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
+                move = moveAlongGround * tempKnockback.x * Time.deltaTime;
+                Movement(move, false, true);
+            } else {
+                move = tempKnockback * Time.deltaTime;
+                Movement(move, false, true);
+            }
             tempKnockback *= 0.9f;
         }
     }

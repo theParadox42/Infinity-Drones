@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
 
     void Collision(Collider2D col) {
         if (col.tag == "Player") {
-            col.GetComponent<PlayerController>().AddKnockback(rb.velocity / 5);
+            col.GetComponent<PlayerController>().AddKnockback(rb.velocity);
         } else if (col.tag == "Proner") {
             col.GetComponent<Proner>().AddKnockback(rb.velocity / 10);
         }
