@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         if (col.tag == "Player") {
             col.GetComponent<PlayerController>().AddKnockback(rb.velocity);
         } else if (col.tag == "Proner") {
-            col.GetComponent<Proner>().AddKnockback(rb.velocity / 10);
+            col.GetComponent<Proner>().TakeDamageFromBullet(gameObject, rb.velocity / 10);
         }
         if (detatchParticles) {
             detatchParticles.Detatch();

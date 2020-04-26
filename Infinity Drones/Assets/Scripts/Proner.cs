@@ -6,6 +6,9 @@ public class Proner : MonoBehaviour
 {
 
     [SerializeField] PlayerController player = null;
+
+    [SerializeField] int health = 4;
+
     [SerializeField] float droneAcceleration = 2f;
     [SerializeField] float droneTargetSpeed = 8f;
     [SerializeField] float targetDistance = 4f;
@@ -16,19 +19,22 @@ public class Proner : MonoBehaviour
     [SerializeField] float inaccuracy = 10f;
     float bulletTimer;
 
-    private Vector2 tempKnockback;
-    private Rigidbody2D rb;
+    Vector2 tempKnockback;
+    Animator animator;
+    Rigidbody2D rb;
 
     // Initialize stuff here
     void Start()
     {
         bulletTimer = bulletReloadTime * Random.Range(1f, 2f);
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Determin direction to move here
     void Update()
     {
+        // Move towards player
         Vector2 playerDisplacement = player.transform.position - transform.position;
         var modifyer = GetSpeedModifyer(playerDisplacement.magnitude - targetDistance);
         rb.velocity += playerDisplacement.normalized * droneAcceleration * modifyer;
@@ -38,15 +44,22 @@ public class Proner : MonoBehaviour
             rb.velocity *= 0.98f;
         }
 
+        // Knockback
         if (tempKnockback.magnitude > 0.1f) {
             rb.velocity += tempKnockback;
             tempKnockback *= 0.95f;
         }
 
+        // Fire at player
         bulletTimer -= Time.deltaTime;
         if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 1.5) {
             bulletTimer = bulletReloadTime;
             Fire(playerDisplacement);
+        }
+
+        // Die
+        if (health <= 0) {
+            Destroy(gameObject);
         }
     }
 
@@ -66,7 +79,7 @@ public class Proner : MonoBehaviour
         newBullet.GetComponent<Rigidbody2D>().velocity = bulletVector;
         Destroy(newBullet, 10f);
 
-        AddKnockback(-bulletVector / 10);
+        AddKnockback(-bulletVector / 30);
     }
 
     float GetAngle(Vector2 vector) {
@@ -75,5 +88,11 @@ public class Proner : MonoBehaviour
 
     public void AddKnockback (Vector2 knockback) {
         tempKnockback += knockback;
+    }
+
+    public void TakeDamageFromBullet (GameObject bullet, Vector2 knockback) {
+        AddKnockback(knockback);
+        animator.SetTrigger("flash");
+        health --;
     }
 }
