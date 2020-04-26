@@ -65,6 +65,8 @@ public class Proner : MonoBehaviour
         GameObject newBullet = Instantiate(bulletPrefab, transform.position + new Vector3(0f, 0f, 0.1f), Quaternion.LookRotation(Vector3.forward, bulletVector));
         newBullet.GetComponent<Rigidbody2D>().velocity = bulletVector;
         Destroy(newBullet, 10f);
+
+        AddKnockback(-bulletVector / 10);
     }
 
     float GetAngle(Vector2 vector) {
