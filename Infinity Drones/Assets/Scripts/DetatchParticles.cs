@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class DetatchParticles : MonoBehaviour
 {
-
-    bool detached = false;
     ParticleSystem myParticleSystem;
 
     void Start () {
@@ -13,7 +11,7 @@ public class DetatchParticles : MonoBehaviour
 
     }
     void Update () {
-        if (detached && !myParticleSystem.IsAlive()) {
+        if (!myParticleSystem.IsAlive()) {
             if (myParticleSystem.particleCount <= 0) {
                 Destroy(gameObject);
             }
@@ -22,6 +20,5 @@ public class DetatchParticles : MonoBehaviour
     public void Detatch() {
         transform.parent = null;
         myParticleSystem.Stop();
-        detached = true;
     }
 }

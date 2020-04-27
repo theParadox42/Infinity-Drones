@@ -135,6 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detatchParticles: {fileID: 293174352027332816}
+  bulletExplosion: {fileID: 7480482672374770580, guid: 8e437cdd1a47d47bfb92acf82d4cd098,
+    type: 3}
 --- !u!1001 &1659834079061975197
 PrefabInstance:
   m_ObjectHideFlags: 0

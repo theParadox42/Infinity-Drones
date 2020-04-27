@@ -50,11 +50,13 @@ public class PhysicsBody : MonoBehaviour
 
         grounded = false;
         
+        // Floor Movement
         Vector2 deltaPosition = velocity * Time.deltaTime;
         Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
         Vector2 move = moveAlongGround * deltaPosition.x;
         Movement (move);
 
+        // Vertical Movement
         move = Vector2.up * deltaPosition.y;
         Movement (move, true);
     }

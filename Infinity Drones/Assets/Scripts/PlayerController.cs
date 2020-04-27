@@ -51,15 +51,13 @@ public class PlayerController : PhysicsBody
         targetVelocity = move * moveSpeed;
 
         if (tempKnockback.magnitude > 0.1) {
-            if (grounded) {
-                Vector2 moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-                move = moveAlongGround * tempKnockback.x * Time.deltaTime;
-                Movement(move, false, true);
-            } else {
-                move = tempKnockback * Time.deltaTime;
-                Movement(move, false, true);
-            }
-            tempKnockback *= 0.9f;
+            // Applce the stuff
+            targetVelocity.x += tempKnockback.x;
+            velocity.y += tempKnockback.y / 3;
+            // Because tempKnockback.y isn't reset every frame, it needs to be reset here
+            tempKnockback.y = 0f;
+            // Slowly decrease the x knockback
+            tempKnockback.x *= 0.9f;
         }
     }
 

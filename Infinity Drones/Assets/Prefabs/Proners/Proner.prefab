@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2133138822844286703}
   - component: {fileID: 2133138822844286700}
   - component: {fileID: 1212195069}
-  - component: {fileID: 1212195067}
   - component: {fileID: 2136202756}
+  - component: {fileID: 1212195067}
   m_Layer: 10
   m_Name: Proner
   m_TagString: Proner
@@ -125,27 +125,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1212195067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2133138822844286701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbb7e53a8bee743eeb2113414ecbc85a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  droneAcceleration: 0.1
-  droneTargetSpeed: 8
-  targetDistance: 4
-  bulletPrefab: {fileID: 3841581558611508524, guid: 1759ce3ea10364fbf809340a691d81e0,
-    type: 3}
-  bulletReloadTime: 2
-  bulletSpeed: 8
-  inaccuracy: 10
 --- !u!60 &2136202756
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -197,3 +176,30 @@ PolygonCollider2D:
       - {x: 0.3125, y: -0.40625}
       - {x: 0.25, y: -0.21875}
       - {x: 0.0625, y: -0.3125}
+--- !u!114 &1212195067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133138822844286701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb7e53a8bee743eeb2113414ecbc85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  explosion: {fileID: 5602537971906808313, guid: 49a967774ae2d4949a32418a43d62ebe,
+    type: 3}
+  health: 4
+  droneAcceleration: 0.1
+  droneTargetSpeed: 8
+  targetDistance: 4
+  bulletPrefab: {fileID: 3841581558611508524, guid: 1759ce3ea10364fbf809340a691d81e0,
+    type: 3}
+  bulletReloadTime: 2
+  bulletSpeed: 8
+  inaccuracy: 10
+  childProner: {fileID: 1212195067, guid: 941d0bf54991d4b1dbfbc9dad5234517, type: 3}
+  printerReloadTime: 10
+  printingDistance: 10

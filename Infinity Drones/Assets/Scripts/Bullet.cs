@@ -5,10 +5,12 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] DetatchParticles detatchParticles = null;
+    [SerializeField] ParticleSystem bulletExplosion = null;
     Rigidbody2D rb;
 
     void Start () {
         rb = GetComponent<Rigidbody2D>();
+        Invoke("DestroySelf", Random.Range(0.8f, 1.5f));
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -24,8 +26,15 @@ public class Bullet : MonoBehaviour
         } else if (col.tag == "Proner") {
             col.GetComponent<Proner>().TakeDamageFromBullet(gameObject, rb.velocity / 10);
         }
+        DestroySelf();
+    }
+
+    void DestroySelf() {
         if (detatchParticles) {
             detatchParticles.Detatch();
+        }
+        if (bulletExplosion) {
+            Instantiate(bulletExplosion, transform.position + new Vector3(0, 0, 10f), transform.rotation);
         }
         Destroy(gameObject);
     }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Proner : MonoBehaviour
 {
 
-    [SerializeField] PlayerController player = null;
-
+    [SerializeField] ParticleSystem explosion = null;
+    [SerializeField] bool isChild = false;
     [SerializeField] int health = 4;
 
     [SerializeField] float droneAcceleration = 2f;
@@ -19,6 +19,14 @@ public class Proner : MonoBehaviour
     [SerializeField] float inaccuracy = 10f;
     float bulletTimer;
 
+    [SerializeField] Proner childProner = null;
+    [SerializeField] float printerReloadTime = 10f;
+    [SerializeField] float printingDistance = 15f;
+    float printerTimer;
+    int printingStage = 0;
+    bool printed;
+
+    PlayerController player = null;
     Vector2 tempKnockback;
     Animator animator;
     Rigidbody2D rb;
@@ -26,17 +34,20 @@ public class Proner : MonoBehaviour
     // Initialize stuff here
     void Start()
     {
+        player = FindObjectOfType<PlayerController>();
         bulletTimer = bulletReloadTime * Random.Range(1f, 2f);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        printerTimer = Random.Range(0.8f, 1.5f) * printerReloadTime;
     }
 
-    // Determin direction to move here
+    // Determine direction to move here
     void Update()
     {
         // Move towards player
+        float tempTargetDistance = printingStage > 0 ? printingDistance : targetDistance;
         Vector2 playerDisplacement = player.transform.position - transform.position;
-        var modifyer = GetSpeedModifyer(playerDisplacement.magnitude - targetDistance);
+        var modifyer = GetSpeedModifyer(playerDisplacement.magnitude - tempTargetDistance);
         rb.velocity += playerDisplacement.normalized * droneAcceleration * modifyer;
         if (rb.velocity.magnitude > droneTargetSpeed) {
             rb.velocity *= 0.5f;
@@ -50,16 +61,35 @@ public class Proner : MonoBehaviour
             tempKnockback *= 0.95f;
         }
 
-        // Fire at player
-        bulletTimer -= Time.deltaTime;
-        if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 1.5) {
-            bulletTimer = bulletReloadTime;
-            Fire(playerDisplacement);
+        // Don't fire while printing
+        if (printingStage == 0) {
+            bulletTimer -= Time.deltaTime;
+            printerTimer -= Time.deltaTime;
+            // Fire at player
+            if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 1.5) {
+                bulletTimer = bulletReloadTime;
+                Fire(playerDisplacement);
+            }
+        }
+
+        // Make more drones
+        if (printerTimer < 0 && printingStage == 0) {
+            printerTimer = printerReloadTime;
+            printingStage ++;
+            printed = false;
+            animator.SetBool("printing", true);
+            Invoke ("PrintDrone", printerReloadTime / 2);
+        } else if (printingStage == 1 && playerDisplacement.magnitude > printingDistance) {
+            PrintDrone();
         }
 
         // Die
         if (health <= 0) {
-            Destroy(gameObject);
+            Destroy(gameObject, 0.1f);
+            if (explosion) {
+                Instantiate(explosion, transform.position, transform.rotation);
+                explosion = null;
+            }
         }
     }
 
@@ -79,11 +109,23 @@ public class Proner : MonoBehaviour
         newBullet.GetComponent<Rigidbody2D>().velocity = bulletVector;
         Destroy(newBullet, 10f);
 
-        AddKnockback(-bulletVector / 30);
+        AddKnockback(-bulletVector / 50);
     }
 
     float GetAngle(Vector2 vector) {
         return Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
+    }
+
+    void PrintDrone() {
+        if (printed) {
+            return;
+        }
+        printed = true;
+        animator.SetBool("printing", false);
+        printingStage = 0;
+        if (childProner) {
+            Instantiate(childProner, transform.position + new Vector3(0, -3f, 0), transform.rotation);
+        }
     }
 
     public void AddKnockback (Vector2 knockback) {
