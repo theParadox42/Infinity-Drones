@@ -169,8 +169,11 @@ public class Proner : MonoBehaviour
         tempKnockback += knockback;
     }
 
-    public void TakeDamageFromBullet (GameObject bullet, Vector2 knockback) {
+    public void TakeDamage (Vector2 knockback) {
         AddKnockback(knockback);
+        TakeDamage();
+    }
+    public void TakeDamage () {
         animator.SetTrigger("flash");
         health --;
     }

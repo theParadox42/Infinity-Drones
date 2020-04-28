@@ -9,6 +9,8 @@ public class PlayerController : PhysicsBody
     [SerializeField] float moveSpeed = 7f;
     [SerializeField] float jumpTakeOffSpeed = 6.2f;
 
+    [SerializeField] int health = 5;
+
     Vector2 tempKnockback = Vector2.zero;
 
     SpriteRenderer spriteRenderer;
@@ -71,6 +73,14 @@ public class PlayerController : PhysicsBody
             spriteRenderer.flipX = !spriteRenderer.flipX;
             flipped = spriteRenderer.flipX;
         }
+    }
+
+    public void TakeDamage(Vector2 knockback) {
+        AddKnockback(knockback);
+        TakeDamage();
+    }
+    public void TakeDamage() {
+        health --;
     }
 
     public void AddKnockback(Vector2 knockback) {

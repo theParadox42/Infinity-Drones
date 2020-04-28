@@ -22,9 +22,9 @@ public class Bullet : MonoBehaviour
 
     void Collision(Collider2D col) {
         if (col.tag == "Player") {
-            col.GetComponent<PlayerController>().AddKnockback(rb.velocity);
+            col.GetComponent<PlayerController>().TakeDamage(rb.velocity);
         } else if (col.tag == "Proner") {
-            col.GetComponent<Proner>().TakeDamageFromBullet(gameObject, rb.velocity / 10);
+            col.GetComponent<Proner>().TakeDamage(rb.velocity / 10);
         }
         DestroySelf();
     }
