@@ -10,17 +10,17 @@ public class PlayerGun : MonoBehaviour
     [SerializeField] float bulletSpeed = 15f;
     [SerializeField] float bulletReloadTime = 0.2f;
     [SerializeField] float inaccuracy = 5f;
+    [SerializeField] float maxGunAngle = 40f;
     float bulletTimer;
 
-    float rotateSpeed;
+    bool usingButtonToFire;
 
     Camera cam;
     Animator animator;
     PlayerController playerController;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         bulletTimer = bulletReloadTime;
 
         cam = Camera.main;
@@ -29,8 +29,7 @@ public class PlayerGun : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         bulletTimer -= Time.deltaTime;
         if (Input.GetAxisRaw("Fire1") != 0 && bulletTimer <= 0) {
             Fire();
@@ -44,7 +43,9 @@ public class PlayerGun : MonoBehaviour
 
         // Graphics update
         bool flipSprite = playerController.flipped ? fireVector.x < 0f : fireVector.x > 0f;
-        playerController.FlipSprite(flipSprite);
+        if (!usingButtonToFire) {
+            playerController.StickTheFlip(flipSprite, 0.3f);
+        }
         animator.SetTrigger("shoot");
         
         // Lock onto proner
@@ -69,16 +70,17 @@ public class PlayerGun : MonoBehaviour
 
     Vector2 GetFireVector () {
         Vector2 fireVector;
+        usingButtonToFire = false;
         if (Input.GetMouseButton(0)) {
             fireVector = cam.ScreenToWorldPoint(Input.mousePosition) - GunPosition();
         } else {
+            usingButtonToFire = true;
             fireVector = new Vector2(playerController.flipped ? 1f : -1f, 0f);
         }
         return fireVector.normalized;
     }
 
     float ClampGunAngle (float rot) {
-        float maxGunAngle = 50f;
         float newRot = rot;
         if (rot > maxGunAngle && rot < 90f) {
             newRot = maxGunAngle;
@@ -102,7 +104,7 @@ public class PlayerGun : MonoBehaviour
             // Checks if it is the right direction
             if ((displacement.x > 0 && goesRight) || (displacement.x < 0 && !goesRight)) {
                 // How far out something can be
-                float margin = 5f;
+                float margin = usingButtonToFire ? maxGunAngle : 5f;
                 float relativeAngle = GetAngle(displacement) - fireAngle;
                 // Check if it is out of the fire range
                 if (relativeAngle > -margin && relativeAngle < margin) {

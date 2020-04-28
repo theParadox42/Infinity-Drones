@@ -15,6 +15,8 @@ public class PlayerController : PhysicsBody
     Animator animator;
 
     public bool flipped;
+    bool flipSticked = false;
+    int flipId = 0;
 
     // Start is called before the first frame update
     void Awake() {
@@ -62,7 +64,10 @@ public class PlayerController : PhysicsBody
     }
 
     public void FlipSprite(bool execute) {
-        if (execute) {
+        FlipSprite(execute, false);
+    }
+    void FlipSprite(bool execute, bool force) {
+        if ((execute && force) || (execute && !flipSticked)) {
             spriteRenderer.flipX = !spriteRenderer.flipX;
             flipped = spriteRenderer.flipX;
         }
@@ -70,6 +75,22 @@ public class PlayerController : PhysicsBody
 
     public void AddKnockback(Vector2 knockback) {
         tempKnockback += knockback;
+    }
+
+    public void StickTheFlip(bool flip, float time) {
+        FlipSprite(flip, true);
+        flipSticked = true;
+        // flipId keeps the flipLock on if this function is called again
+        flipId ++;
+        StartCoroutine(UnStickTheFlip(flipId, time));
+    }
+    IEnumerator UnStickTheFlip(int id, float delay) {
+        yield return new WaitForSeconds(delay);
+        if (id == flipId) {
+            flipSticked = false;
+            // Just for absolutely no good reason
+            flipId = 0;
+        }
     }
 
 }

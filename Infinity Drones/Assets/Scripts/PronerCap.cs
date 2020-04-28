@@ -9,8 +9,7 @@ public class PronerCap : MonoBehaviour
     public bool maxedOut = false;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         currentProners = FindObjectsOfType<Proner>().Length;
         UpdateStatus();
     }
