@@ -9,6 +9,9 @@ public class Proner : MonoBehaviour
     [SerializeField] bool isChild = false;
     [SerializeField] int health = 4;
 
+    bool dead;
+    bool active;
+
     [SerializeField] float droneAcceleration = 2f;
     [SerializeField] float droneTargetSpeed = 8f;
     [SerializeField] float targetDistance = 4f;
@@ -27,23 +30,55 @@ public class Proner : MonoBehaviour
     bool printed;
 
     PlayerController player = null;
+    PronerCap pronerCap = null;
+
     Vector2 tempKnockback;
+
     Animator animator;
     Rigidbody2D rb;
+    Collider2D col;
 
     // Initialize stuff here
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
-        bulletTimer = bulletReloadTime * Random.Range(1f, 2f);
+        pronerCap = FindObjectOfType<PronerCap>();
+
+        if (pronerCap) {
+            pronerCap.AddProner();
+        }
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        col = GetComponent<Collider2D>();
+
+        bulletTimer = bulletReloadTime * Random.Range(1f, 2f);
         printerTimer = Random.Range(0.8f, 1.5f) * printerReloadTime;
+
+        active = !isChild;
+        dead = false;
+        if (!active) {
+            transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            col.enabled = false;
+            rb.velocity = new Vector3(0, -0.5f, 0f);
+        }
     }
 
     // Determine direction to move here
     void Update()
     {
+        if (!active) {
+            transform.localScale = transform.localScale * 1.5f;
+            if (transform.localScale.x >= 1f) {
+                transform.localScale = new Vector3(1f, 1f, 1f);
+                active = true;
+                col.enabled = true;
+            }
+            return;
+        } else if (player == null) {
+            return;
+        }
+
         // Move towards player
         float tempTargetDistance = printingStage > 0 ? printingDistance : targetDistance;
         Vector2 playerDisplacement = player.transform.position - transform.position;
@@ -73,7 +108,7 @@ public class Proner : MonoBehaviour
         }
 
         // Make more drones
-        if (printerTimer < 0 && printingStage == 0) {
+        if (printerTimer < 0 && printingStage == 0 && !pronerCap.maxedOut) {
             printerTimer = printerReloadTime;
             printingStage ++;
             printed = false;
@@ -84,8 +119,10 @@ public class Proner : MonoBehaviour
         }
 
         // Die
-        if (health <= 0) {
+        if (health <= 0 && !dead) {
+            dead = true;
             Destroy(gameObject, 0.1f);
+            pronerCap.RemoveProner();
             if (explosion) {
                 Instantiate(explosion, transform.position, transform.rotation);
                 explosion = null;
@@ -124,7 +161,7 @@ public class Proner : MonoBehaviour
         animator.SetBool("printing", false);
         printingStage = 0;
         if (childProner) {
-            Instantiate(childProner, transform.position + new Vector3(0, -3f, 0), transform.rotation);
+            Instantiate(childProner, transform.position + new Vector3(0, -col.bounds.extents.y, 0), transform.rotation);
         }
     }
 

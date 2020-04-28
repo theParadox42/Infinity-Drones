@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
 
     void Start () {
         rb = GetComponent<Rigidbody2D>();
-        Invoke("DestroySelf", Random.Range(0.8f, 1.5f));
+        Invoke("DestroySelf", Random.Range(0.5f, 0.7f));
     }
 
     void OnCollisionEnter2D(Collision2D col) {
