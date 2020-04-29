@@ -15,7 +15,7 @@ public class WasteBlock : MonoBehaviour
     void OnTriggerStay2D(Collider2D col) {
         bool releaseParticles = false;
         if (col.tag == "Player") {
-            if (col.GetComponent<PlayerController>().TakeDamage(Vector2.up)) {
+            if (col.GetComponent<PlayerController>().TakeDamage(Vector2.up / 5)) {
                 releaseParticles = true;
             }
         } else if (col.tag == "Proner") {

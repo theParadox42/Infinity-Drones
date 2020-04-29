@@ -96,6 +96,7 @@ public class PlayerController : PhysicsBody
         if (damageCooldownTimer <= 0f) {
             health --;
             damageCooldownTimer = damageCooldown;
+            animator.SetTrigger("damage");
             return true;
         }
         return false;

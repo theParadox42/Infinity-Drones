@@ -5,6 +5,8 @@ using UnityEngine;
 public class Proner : MonoBehaviour
 {
 
+    #region Variables
+
     [SerializeField] int health = 4;
     [SerializeField] float damageCooldown = 0.2f;
     float damageCooldownTimer;
@@ -35,12 +37,16 @@ public class Proner : MonoBehaviour
     PronerCap pronerCap = null;
 
     Vector2 tempKnockback;
+    Vector2 playerDisplacement;
 
     Animator animator;
     Rigidbody2D rb;
     Collider2D col;
 
-    // Initialize stuff here
+    #endregion
+
+    #region System Events
+
     void Start() {
         player = FindObjectOfType<PlayerController>();
         pronerCap = FindObjectOfType<PronerCap>();
@@ -65,23 +71,30 @@ public class Proner : MonoBehaviour
         }
     }
 
-    // Determine direction to move here
     void Update() {
-        if (!active) {
-            transform.localScale = transform.localScale * 1.5f;
-            if (transform.localScale.x >= 1f) {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-                active = true;
-                col.enabled = true;
-            }
+        if (player && active) {
+            Move();
+            ReloadBullets();
+        } else if (!active) {
+            UpdateActive();
             return;
-        } else if (player == null) {
-            return;
+        } else if (!player) {
+            playerDisplacement = new Vector2(0f, 0f);
         }
+        UpdateHealth();
+        HandleKnockback();
+        ReloadPrinter();
 
+    }
+
+    #endregion
+
+    #region Movement
+
+    void Move () {
         // Move towards player
         float tempTargetDistance = printingStage > 0 ? printingDistance : targetDistance;
-        Vector2 playerDisplacement = player.transform.position - transform.position;
+        playerDisplacement = player.transform.position - transform.position;
         var modifyer = GetSpeedModifyer(playerDisplacement.magnitude - tempTargetDistance);
         rb.velocity += playerDisplacement.normalized * droneAcceleration * modifyer;
         if (rb.velocity.magnitude > droneTargetSpeed) {
@@ -89,13 +102,18 @@ public class Proner : MonoBehaviour
         } else {
             rb.velocity *= 0.98f;
         }
+    }
 
-        // Knockback
-        if (tempKnockback.magnitude > 0.1f) {
-            rb.velocity += tempKnockback;
-            tempKnockback *= 0.95f;
-        }
+    float GetSpeedModifyer (float distance) {
+        float n = Mathf.Pow(2, distance);
+        return 2f * n / (n + 1f) - 1f;
+    }
 
+    #endregion
+
+    #region Firing
+
+    void ReloadBullets () {
         // Don't fire while printing
         if (printingStage == 0) {
             bulletTimer -= Time.deltaTime;
@@ -105,40 +123,6 @@ public class Proner : MonoBehaviour
                 Fire(playerDisplacement);
             }
         }
-
-        // Make more drones
-        if (!pronerCap.maxedOut && printingStage == 0) {
-            printerTimer -= Time.deltaTime;
-            if (printerTimer <= 0) {
-                printerTimer = printerReloadTime;
-                printingStage ++;
-                printed = false;
-                animator.SetBool("printing", true);
-                Invoke ("PrintDrone", printerReloadTime / 2);
-            }
-        } else if (printingStage == 1 && playerDisplacement.magnitude > printingDistance) {
-            PrintDrone();
-        }
-
-        // Die
-        if (health <= 0 && !dead) {
-            dead = true;
-            Destroy(gameObject, 0.1f);
-            pronerCap.RemoveProner();
-            if (explosion) {
-                Instantiate(explosion, transform.position, transform.rotation);
-                explosion = null;
-            }
-        }
-
-        if (damageCooldownTimer >= 0f) {
-            damageCooldownTimer -= Time.deltaTime;
-        }
-    }
-
-    float GetSpeedModifyer (float distance) {
-        float n = Mathf.Pow(2, distance);
-        return 2f * n / (n + 1f) - 1f;
     }
 
     void Fire(Vector2 playerDisplacement) {
@@ -159,6 +143,65 @@ public class Proner : MonoBehaviour
         return Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
     }
 
+    #endregion
+
+    #region Regular Updates
+
+    void UpdateHealth () {
+        // Die
+        if (health <= 0 && !dead) {
+            dead = true;
+            Destroy(gameObject, 0.1f);
+            pronerCap.RemoveProner();
+            if (explosion) {
+                Instantiate(explosion, transform.position, transform.rotation);
+                explosion = null;
+            }
+        }
+
+        if (damageCooldownTimer >= 0f) {
+            damageCooldownTimer -= Time.deltaTime;
+        }
+    }
+
+    void UpdateActive () {
+        transform.localScale = transform.localScale * 1.2f;
+        if (transform.localScale.x >= 1f) {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+            active = true;
+            col.enabled = true;
+            transform.parent = null;
+        }
+    }
+
+    void HandleKnockback () {
+        // Knockback
+        if (tempKnockback.magnitude > 0.1f) {
+            rb.velocity += tempKnockback;
+            tempKnockback *= 0.95f;
+        }
+    }
+
+    #endregion
+    
+    #region Printing
+
+    void ReloadPrinter () {
+        // Make more drones
+        if (!pronerCap.maxedOut && printingStage == 0) {
+            printerTimer -= Time.deltaTime;
+            if (printerTimer <= 0) {
+                printerTimer = printerReloadTime;
+                printingStage ++;
+                printed = false;
+                animator.SetBool("printing", true);
+                Invoke ("PrintDrone", printerReloadTime / 2);
+            }
+        } else if (printingStage == 1 && playerDisplacement.magnitude > printingDistance) {
+            PrintDrone();
+        }
+    }
+
     void PrintDrone() {
         if (printed) {
             return;
@@ -167,9 +210,14 @@ public class Proner : MonoBehaviour
         animator.SetBool("printing", false);
         printingStage = 0;
         if (childProner) {
-            Instantiate(childProner, transform.position + new Vector3(0, -col.bounds.extents.y, 0), transform.rotation);
+            var newProner = Instantiate(childProner, transform);
+            newProner.transform.position = newProner.transform.position - new Vector3(0, col.bounds.extents.y, 0);
         }
     }
+    
+    #endregion
+
+    #region Input Events
 
     public void AddKnockback (Vector2 knockback) {
         tempKnockback += knockback;
@@ -188,4 +236,6 @@ public class Proner : MonoBehaviour
         }
         return false;
     }
+
+    #endregion
 }

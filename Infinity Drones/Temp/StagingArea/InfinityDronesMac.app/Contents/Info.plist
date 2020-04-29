@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>UnityPlayerExec</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Unity Player version DEVELOPMENT_VERSION_WITH_BUILD_NUMBER. DEVELOPMENT_COPYRIGHT</string>
+	<key>CFBundleIconFile</key>
+	<string>PlayerIcon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>UNITY_BUNDLE_IDENTIFIER</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleSupportedPlatforms</key>
+		<array>
+			<string>MacOSX</string>
+		</array>
+	<key>LSApplicationCategoryType</key>
+	<string>UNITY_APPLICATION_CATEGORY</string>
+	<key>CFBundleName</key>
+	<string>UNITY_PLAYER_BUNDLE_NAME</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>UNITY_PLAYER_BUNDLE_VERSION</string>
+	<key>CFBundleVersion</key>
+	<string>UNITY_PLAYER_BUILD_NUMBER</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>PlayerApplication</string>
+	<key>UnityBuildNumber</key>
+	<string>DEVELOPMENT_BUILD_NUMBER</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.9.0</string>
+</dict>
+</plist>
