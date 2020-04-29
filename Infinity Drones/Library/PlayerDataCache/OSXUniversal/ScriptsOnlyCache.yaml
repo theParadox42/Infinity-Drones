@@ -76,6 +76,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11860}
     - Class: 114
+      Script: {instanceID: 11878}
+    - Class: 114
       Script: {instanceID: 12374}
     - Class: 114
       Script: {instanceID: 12444}
@@ -386,7 +388,7 @@ ScriptsOnlyBuild:
     className: VerticalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: b07742432d5896b817ad95ccf6a97327
+      Hash: 0efaf76815c4ec6fd723124bb01ab759
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController
