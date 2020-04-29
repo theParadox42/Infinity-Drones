@@ -174,7 +174,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3841581558611508524, guid: 1759ce3ea10364fbf809340a691d81e0,
     type: 3}
   bulletReloadTime: 2
-  bulletSpeed: 8
+  bulletSpeed: 10
   inaccuracy: 10
   childProner: {fileID: 5375745562918579843, guid: b898a247a3f424528a4099a898607207,
     type: 3}

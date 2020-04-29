@@ -10,6 +10,10 @@ public class PlayerController : PhysicsBody
     [SerializeField] float jumpTakeOffSpeed = 6.2f;
 
     [SerializeField] int health = 5;
+    [SerializeField] float damageCooldown = 0.2f;
+    float damageCooldownTimer;
+
+    [SerializeField] SceneLoader sceneLoader = null;
 
     Vector2 tempKnockback = Vector2.zero;
 
@@ -28,6 +32,7 @@ public class PlayerController : PhysicsBody
         shellRadius = 0.04f;
     }
     
+    // Really acts as the main update loop
     protected override void ComputeVelocity() {
         Vector2 move = Vector2.zero;
         if (Mathf.Abs(velocity.magnitude) < maxSpeed) {
@@ -63,6 +68,14 @@ public class PlayerController : PhysicsBody
             // Slowly decrease the x knockback
             tempKnockback.x *= 0.9f;
         }
+
+        if (damageCooldownTimer >= 0f) {
+            damageCooldownTimer -= Time.deltaTime;
+        }
+
+        if (health <= 0) {
+            Die();
+        }
     }
 
     public void FlipSprite(bool execute) {
@@ -75,12 +88,17 @@ public class PlayerController : PhysicsBody
         }
     }
 
-    public void TakeDamage(Vector2 knockback) {
+    public bool TakeDamage(Vector2 knockback) {
         AddKnockback(knockback);
-        TakeDamage();
+        return TakeDamage();
     }
-    public void TakeDamage() {
-        health --;
+    public bool TakeDamage() {
+        if (damageCooldownTimer <= 0f) {
+            health --;
+            damageCooldownTimer = damageCooldown;
+            return true;
+        }
+        return false;
     }
 
     public void AddKnockback(Vector2 knockback) {
@@ -100,6 +118,17 @@ public class PlayerController : PhysicsBody
             flipSticked = false;
             // Just for absolutely no good reason
             flipId = 0;
+        }
+    }
+
+    void Die () {
+        // Death sequence here
+        // Make a fading away particle system or something
+        gameObject.SetActive(false);
+        if (sceneLoader) {
+            sceneLoader.ReloadSceneIn(2f);
+        } else {
+            Debug.Log("No Scene Loader!!!");
         }
     }
 

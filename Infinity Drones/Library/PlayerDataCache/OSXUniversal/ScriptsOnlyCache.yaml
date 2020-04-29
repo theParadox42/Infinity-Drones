@@ -8,10 +8,13 @@ ScriptsOnlyBuild:
     - Proner
     - PronerCap
     - SceneLoader
+    - WasteBlock
     Unity.2D.PixelPerfect.dll:
     - UnityEngine.U2D.PixelPerfectCamera
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
+    - UnityEditor.Tilemaps.GridPaletteBrushes
+    - UnityEditor.Tilemaps.GridPalettes
     - UnityEditor.Tilemaps.SceneViewGridManager
     - UnityEditor.Tilemaps.TileDragAndDropManager
     Unity.Rider.Editor.dll:
@@ -19,8 +22,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -71,11 +76,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11860}
     - Class: 114
-      Script: {instanceID: 11878}
-    - Class: 114
       Script: {instanceID: 12374}
     - Class: 114
       Script: {instanceID: 12444}
+    - Class: 114
+      Script: {instanceID: 12578}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 157
@@ -315,7 +320,7 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
-      Hash: c2c4312bb2a58f552fc49235ea0ee3c4
+      Hash: e40863a5d632cb1483dada2dcad4f24e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerGun
@@ -381,7 +386,7 @@ ScriptsOnlyBuild:
     className: VerticalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: 54df6af563c1795f97bf896c42d2a189
+      Hash: b07742432d5896b817ad95ccf6a97327
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController
@@ -399,7 +404,7 @@ ScriptsOnlyBuild:
     className: SignalReceiver
   - hash:
       serializedVersion: 2
-      Hash: d0e55e7e21a96287746b227e554c910d
+      Hash: 9ef464ca7df473da401078710ed7f36d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Proner
@@ -439,6 +444,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: TimelineAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 372bcc9885284227951b580a6676a853
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: WasteBlock
   - hash:
       serializedVersion: 2
       Hash: 8001a5f7502aab37e42206da015e6914

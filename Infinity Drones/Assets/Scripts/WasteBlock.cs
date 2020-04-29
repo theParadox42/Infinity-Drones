@@ -4,19 +4,28 @@ using UnityEngine;
 
 public class WasteBlock : MonoBehaviour
 {
-    [SerializeField] ParticleSystem toxicBurn;
+    [SerializeField] ParticleSystem toxicBurn = null;
+    BoxCollider2D boxCollider;
+
+    void Start () {
+        boxCollider = GetComponent<BoxCollider2D>();
+    }
 
     // On Collision
-    void OnTriggerEnter2D(Collider2D col) {
-        if (col.tag == "Player" || col.tag == "Proner") {
-            Vector3 position = new Vector3(col.transform.position.x, transform.position.y, col.transform.position.z + 0.3);
-            Instantiate(toxicBurn, position, transform.rotation);
-            if (col.tag == "Player") {
-                col.GetComponent<PlayerController>().TakeDamage(Vector2.up);
-            } else if (col.tag == "Proner") {
-                col.GetComponent<Proner>().TakeDamage(Vector2.up);
+    void OnTriggerStay2D(Collider2D col) {
+        bool releaseParticles = false;
+        if (col.tag == "Player") {
+            if (col.GetComponent<PlayerController>().TakeDamage(Vector2.up)) {
+                releaseParticles = true;
+            }
+        } else if (col.tag == "Proner") {
+            if (col.GetComponent<Proner>().TakeDamage(Vector2.up * 2f)) {
+                releaseParticles = true;
             }
         }
-
+        if (releaseParticles) {
+            Vector3 position = new Vector3(col.transform.position.x, transform.position.y, col.transform.position.z + 0.3f);
+            Instantiate(toxicBurn, position, transform.rotation);
+        }
     }
 }

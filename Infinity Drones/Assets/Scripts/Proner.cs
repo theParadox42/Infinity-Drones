@@ -5,10 +5,11 @@ using UnityEngine;
 public class Proner : MonoBehaviour
 {
 
-    [SerializeField] ParticleSystem explosion = null;
-    [SerializeField] bool isChild = false;
     [SerializeField] int health = 4;
+    [SerializeField] float damageCooldown = 0.2f;
+    float damageCooldownTimer;
 
+    [SerializeField] bool isChild = false;
     bool dead;
     bool active;
 
@@ -29,6 +30,7 @@ public class Proner : MonoBehaviour
     int printingStage = 0;
     bool printed;
 
+    [SerializeField] ParticleSystem explosion = null;
     PlayerController player = null;
     PronerCap pronerCap = null;
 
@@ -39,8 +41,7 @@ public class Proner : MonoBehaviour
     Collider2D col;
 
     // Initialize stuff here
-    void Start()
-    {
+    void Start() {
         player = FindObjectOfType<PlayerController>();
         pronerCap = FindObjectOfType<PronerCap>();
 
@@ -65,8 +66,7 @@ public class Proner : MonoBehaviour
     }
 
     // Determine direction to move here
-    void Update()
-    {
+    void Update() {
         if (!active) {
             transform.localScale = transform.localScale * 1.5f;
             if (transform.localScale.x >= 1f) {
@@ -99,7 +99,6 @@ public class Proner : MonoBehaviour
         // Don't fire while printing
         if (printingStage == 0) {
             bulletTimer -= Time.deltaTime;
-            printerTimer -= Time.deltaTime;
             // Fire at player
             if (bulletTimer < 0 && playerDisplacement.magnitude < targetDistance * 1.5) {
                 bulletTimer = bulletReloadTime;
@@ -108,12 +107,15 @@ public class Proner : MonoBehaviour
         }
 
         // Make more drones
-        if (printerTimer < 0 && printingStage == 0 && !pronerCap.maxedOut) {
-            printerTimer = printerReloadTime;
-            printingStage ++;
-            printed = false;
-            animator.SetBool("printing", true);
-            Invoke ("PrintDrone", printerReloadTime / 2);
+        if (!pronerCap.maxedOut && printingStage == 0) {
+            printerTimer -= Time.deltaTime;
+            if (printerTimer <= 0) {
+                printerTimer = printerReloadTime;
+                printingStage ++;
+                printed = false;
+                animator.SetBool("printing", true);
+                Invoke ("PrintDrone", printerReloadTime / 2);
+            }
         } else if (printingStage == 1 && playerDisplacement.magnitude > printingDistance) {
             PrintDrone();
         }
@@ -127,6 +129,10 @@ public class Proner : MonoBehaviour
                 Instantiate(explosion, transform.position, transform.rotation);
                 explosion = null;
             }
+        }
+
+        if (damageCooldownTimer >= 0f) {
+            damageCooldownTimer -= Time.deltaTime;
         }
     }
 
@@ -169,12 +175,17 @@ public class Proner : MonoBehaviour
         tempKnockback += knockback;
     }
 
-    public void TakeDamage (Vector2 knockback) {
+    public bool TakeDamage (Vector2 knockback) {
         AddKnockback(knockback);
-        TakeDamage();
+        return TakeDamage();
     }
-    public void TakeDamage () {
-        animator.SetTrigger("flash");
-        health --;
+    public bool TakeDamage () {
+        if (damageCooldownTimer <= 0f) {
+            animator.SetTrigger("flash");
+            health --;
+            damageCooldownTimer = damageCooldown;
+            return true;
+        }
+        return false;
     }
 }
